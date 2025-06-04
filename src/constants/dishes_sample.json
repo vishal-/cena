@@ -1,0 +1,112 @@
+{
+  "Breakfast": [
+    {
+      "name": "Poha",
+      "description": "A savory rice flake dish made with turmeric, mustard seeds, curry leaves, and peanuts."
+    },
+    {
+      "name": "Aloo Paratha",
+      "description": "A stuffed flatbread made with whole wheat flour and filled with spiced mashed potatoes."
+    },
+    {
+      "name": "Dosa",
+      "description": "A thin, crispy pancake made from fermented rice and urad dal batter, often served with chutney and sambar."
+    },
+    {
+      "name": "Idli",
+      "description": "Steamed rice cakes made from a fermented batter of rice and urad dal, typically served with sambar and chutney."
+    },
+    {
+      "name": "Upma",
+      "description": "A savory dish made from semolina, vegetables, and mustard seeds, often served as a breakfast or snack."
+    }
+  ],
+  "Lunch": [
+    {
+      "name": "Butter Chicken",
+      "description": "A rich and creamy chicken curry made with tomatoes, cream, and various Indian spices."
+    },
+    {
+      "name": "Biryani",
+      "description": "A fragrant rice dish cooked with meat (usually chicken, mutton, or beef), basmati rice, and spices."
+    },
+    {
+      "name": "Chole Bhature",
+      "description": "A North Indian dish consisting of spicy chickpeas (chole) and fried bread (bhature)."
+    },
+    {
+      "name": "Rajma",
+      "description": "A curry made with kidney beans, tomatoes, and spices, usually served with rice."
+    },
+    {
+      "name": "Palak Paneer",
+      "description": "A curry made with paneer (Indian cottage cheese) cooked in a smooth spinach gravy."
+    }
+  ],
+  "Dinner": [
+    {
+      "name": "Dal Tadka",
+      "description": "A popular lentil dish made with yellow dal cooked with tomatoes, onions, and spices."
+    },
+    {
+      "name": "Chicken Tikka Masala",
+      "description": "Grilled chicken pieces cooked in a creamy, spiced tomato-based gravy."
+    },
+    {
+      "name": "Naan",
+      "description": "A soft, leavened Indian flatbread, often served with curries and gravies."
+    },
+    {
+      "name": "Malai Kofta",
+      "description": "Fried dumplings made from mashed potatoes and paneer, cooked in a creamy, spiced gravy."
+    },
+    {
+      "name": "Matar Pulao",
+      "description": "A simple, fragrant rice dish cooked with peas, cumin seeds, and whole spices."
+    }
+  ],
+  "Snacks": [
+    {
+      "name": "Samosa",
+      "description": "Deep-fried pastry filled with spiced potatoes, peas, and sometimes meat."
+    },
+    {
+      "name": "Pani Puri",
+      "description": "Small, hollow puris filled with spicy, tangy water, potatoes, and chickpeas."
+    },
+    {
+      "name": "Bhel Puri",
+      "description": "A puffed rice snack mixed with tamarind chutney, onions, tomatoes, and sev."
+    },
+    {
+      "name": "Vada Pav",
+      "description": "A popular Mumbai street food consisting of a spicy potato fritter (vada) in a bun (pav)."
+    },
+    {
+      "name": "Dhokla",
+      "description": "A steamed, spongy snack made from fermented rice and chickpea flour, often served with chutneys."
+    }
+  ],
+  "Desserts": [
+    {
+      "name": "Gulab Jamun",
+      "description": "Sweet, deep-fried dough balls soaked in sugar syrup, often flavored with rose water or cardamom."
+    },
+    {
+      "name": "Rasgulla",
+      "description": "Soft, spongy balls made from chhena (Indian cottage cheese) soaked in sugary syrup."
+    },
+    {
+      "name": "Jalebi",
+      "description": "A deep-fried dessert made from flour, soaked in sugar syrup and often served hot."
+    },
+    {
+      "name": "Kheer",
+      "description": "A creamy rice pudding made with milk, rice, sugar, and flavored with cardamom and nuts."
+    },
+    {
+      "name": "Ladoo",
+      "description": "Sweet, round confections made from various ingredients like chickpea flour, semolina, and jaggery."
+    }
+  ]
+}
