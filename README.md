@@ -56,6 +56,16 @@ npm run build
 yarn build
 ```
 
+## Deployment to GitHub Pages
+
+```bash
+npm run deploy
+# or
+yarn deploy
+```
+
+This will build the app and deploy it to the `gh-pages` branch of your repository, making it available at `https://yourusername.github.io/cena/`.
+
 ## License
 
 This project is licensed under the terms found in the LICENSE file.
