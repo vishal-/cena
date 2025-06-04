@@ -20,7 +20,7 @@ const DayView: React.FC<DayViewProps> = ({ day, date }) => {
   return (
     <Card sx={{ width: "100%" }}>
       <CardHeader
-        title={day}
+        title={<Typography variant="h5">{day}</Typography>}
         subheader={
           <Typography variant="subtitle2">{simplifiedDate}</Typography>
         }
