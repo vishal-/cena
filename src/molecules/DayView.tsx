@@ -2,15 +2,15 @@ import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import PlanBox from "./PlanBox";
 import type React from "react";
 import { Meals } from "../constants/app.constants";
-import { getSimplifiedDate } from "../functions/date.function";
+import type { WeekDayType } from "../constants/app.types";
 
 interface DayViewProps {
+  weekDay: WeekDayType;
   day: string;
-  date: Date;
 }
 
-const DayView: React.FC<DayViewProps> = ({ day, date }) => {
-  const simplifiedDate = getSimplifiedDate(date);
+const DayView: React.FC<DayViewProps> = ({ weekDay, day }) => {
+  const { date, simpleDate, year } = weekDay;
 
   const isPastDate =
     date.toDateString() === new Date().toDateString()
@@ -24,8 +24,7 @@ const DayView: React.FC<DayViewProps> = ({ day, date }) => {
         subheader={
           <>
             <Typography variant="subtitle2">
-              {simplifiedDate}
-
+              {simpleDate}&#160;{year}
               {isPastDate && (
                 <Typography component="span" sx={{ mx: 1 }} color="error">
                   (not editable)

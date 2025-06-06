@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Box, Button, Typography } from "@mui/material";
-import { getRelatedWeek, overSimplifiedDate } from "../functions/date.function";
+import { getRelatedWeek } from "../functions/date.function";
 import { DaysOfWeek } from "../constants/app.constants";
 import type { WeekType } from "../constants/app.types";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -23,8 +23,8 @@ const SelectWeek: React.FC<SelectWeekProps> = ({
 
   const isCurrentWeek = useMemo(
     () =>
-      week[DaysOfWeek[0]].toDateString() ===
-      currentWeek[DaysOfWeek[0]].toDateString(),
+      week[DaysOfWeek[0]].date.toDateString() ===
+      currentWeek[DaysOfWeek[0]].date.toDateString(),
     [week]
   );
 
@@ -45,8 +45,8 @@ const SelectWeek: React.FC<SelectWeekProps> = ({
         variant="subtitle1"
         color={isCurrentWeek ? "" : "secondary"}
       >
-        Week ( {overSimplifiedDate(week[DaysOfWeek[0]])} -{" "}
-        {overSimplifiedDate(week[DaysOfWeek[6]])} )
+        Week ( {week[DaysOfWeek[0]].simpleDate}&#160;-&#160;&#160;
+        {week[DaysOfWeek[6]].simpleDate} )
       </Typography>
 
       <Button variant="text" onClick={onNext}>

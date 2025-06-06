@@ -39,7 +39,7 @@ const WeekView: React.FC = () => {
           ))}
         </Tabs>
 
-        <DayView day={selectedDay} date={week[selectedDay]} />
+        <DayView day={selectedDay} weekDay={week[selectedDay]} />
       </Box>
     </>
   );

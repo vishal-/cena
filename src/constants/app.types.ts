@@ -1,1 +1,9 @@
-export type WeekType = Record<string, Date>;
+export interface WeekDayType {
+  date: Date;
+  simpleDate: string;
+  year: number;
+}
+
+export type WeekType = {
+  [day: string]: WeekDayType;
+};
