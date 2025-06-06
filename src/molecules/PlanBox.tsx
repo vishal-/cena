@@ -38,10 +38,10 @@ const PlanBox: React.FC<PlanBoxProps> = ({ meal, disable }) => {
   };
 
   return (
-    <Box sx={{ my: 3 }}>
+    <Box sx={{ my: 2 }}>
       <Autocomplete
         multiple
-        id="tags-outlined"
+        id={`planbox_${meal}`}
         disabled={disable}
         value={selectedChips}
         onChange={handleChange}
@@ -50,7 +50,7 @@ const PlanBox: React.FC<PlanBoxProps> = ({ meal, disable }) => {
         options={options}
         freeSolo // Allow typing custom values not just from the list
         renderInput={(params) => <TextField {...params} label={meal} />}
-        renderTags={(value, getTagProps) =>
+        renderValue={(value, getTagProps) =>
           value.map((option, index) => (
             <Chip label={option} {...getTagProps({ index })} key={index} />
           ))

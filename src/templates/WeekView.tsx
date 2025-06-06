@@ -14,11 +14,6 @@ const WeekView: React.FC = () => {
     DaysOfWeek[new Date().getDay()]
   );
 
-  console.log(
-    week[DaysOfWeek[0]].toDateString(),
-    currentWeek[DaysOfWeek[0]].toDateString()
-  );
-
   return (
     <>
       <SelectWeek week={week} setWeek={setWeek} currentWeek={currentWeek} />

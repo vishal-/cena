@@ -22,16 +22,21 @@ const DayView: React.FC<DayViewProps> = ({ day, date }) => {
       <CardHeader
         title={<Typography variant="h5">{day}</Typography>}
         subheader={
-          <Typography variant="subtitle2">{simplifiedDate}</Typography>
+          <>
+            <Typography variant="subtitle2">
+              {simplifiedDate}
+
+              {isPastDate && (
+                <Typography component="span" sx={{ mx: 1 }} color="error">
+                  (not editable)
+                </Typography>
+              )}
+            </Typography>
+          </>
         }
       />
-      <CardContent>
-        {isPastDate && (
-          <Typography variant="body1" color="error">
-            Date is passed (not editable)
-          </Typography>
-        )}
 
+      <CardContent>
         {Meals.map((meal) => (
           <PlanBox key={`meal_${meal}`} meal={meal} disable={isPastDate} />
         ))}
