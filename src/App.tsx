@@ -1,7 +1,7 @@
-import "./App.css";
+import Week from "./pages/week";
 
 function App() {
-  return <>This is the container</>;
+  return <Week />;
 }
 
 export default App;
