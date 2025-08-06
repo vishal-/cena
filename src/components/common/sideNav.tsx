@@ -7,13 +7,13 @@ interface SideNavProps {
 
 const SideNav: React.FC<SideNavProps> = ({ selectedDay, setSelectedDay }) => {
   return (
-    <nav className="w-15 bg-gray-800 border-r border-gray-700">
-      <ul className="space-y-2">
+    <nav className="w-18 bg-gray-800 border-r border-gray-700">
+      <ul className="space-y-2 mt-9">
         {days.map((day) => (
           <li key={day}>
             <button
               onClick={() => setSelectedDay(day)}
-              className={`w-full p-3 rounded-md transition-colors ${
+              className={`w-full my-1 py-1 transition-colors ${
                 selectedDay === day
                   ? "bg-blue-600 text-white"
                   : "text-gray-300 hover:bg-gray-700 hover:text-white"
