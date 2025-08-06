@@ -1,5 +1,12 @@
 import { DAYS_OF_WEEK as days } from "../lib/app.constants";
 
+export const getWeekStart = (date: Date) => {
+  const start = new Date(date);
+  const day = start.getDay();
+  const diff = start.getDate() - day;
+  return new Date(start.setDate(diff));
+};
+
 export const getWeekEnd = (startDate: Date) => {
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 6);
