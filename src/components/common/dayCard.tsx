@@ -1,5 +1,5 @@
 import { getDateForDay } from "../../utils/date.utils";
-import MealInput from "../ui/mealInput";
+import MealMenu from "./MealMenu";
 
 interface DayCardProps {
   selectedDay: string;
@@ -16,6 +16,12 @@ const DayCard: React.FC<DayCardProps> = ({
   meals,
   addMeal,
 }) => {
+  const mealTypes = [
+    { type: "breakfast" as const, title: "Breakfast", color: "bg-blue-600" },
+    { type: "lunch" as const, title: "Lunch", color: "bg-green-600" },
+    { type: "dinner" as const, title: "Dinner", color: "bg-purple-600" },
+  ];
+
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-lg">
       <h3 className="text-white text-2xl font-bold">{selectedDay}</h3>
@@ -23,62 +29,16 @@ const DayCard: React.FC<DayCardProps> = ({
         {getDateForDay(selectedDay, currentWeekStart)}
       </p>
 
-      {/* Breakfast */}
-      <div className="mb-6">
-        <h4 className="text-white text-lg font-semibold mb-2">Breakfast</h4>
-        <MealInput
-          onSelect={(meal) => addMeal("breakfast", meal)}
-          placeholder="Add breakfast item..."
+      {mealTypes.map(({ type, title, color }) => (
+        <MealMenu
+          key={type}
+          title={title}
+          mealType={type}
+          meals={meals[selectedDay]?.[type] || []}
+          onAddMeal={(meal) => addMeal(type, meal)}
+          color={color}
         />
-        <div className="mt-2 flex flex-wrap gap-2">
-          {meals[selectedDay]?.breakfast?.map((meal, index) => (
-            <span
-              key={index}
-              className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm"
-            >
-              {meal}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Lunch */}
-      <div className="mb-6">
-        <h4 className="text-white text-lg font-semibold mb-2">Lunch</h4>
-        <MealInput
-          onSelect={(meal) => addMeal("lunch", meal)}
-          placeholder="Add lunch item..."
-        />
-        <div className="mt-2 flex flex-wrap gap-2">
-          {meals[selectedDay]?.lunch?.map((meal, index) => (
-            <span
-              key={index}
-              className="bg-green-600 text-white px-3 py-1 rounded-full text-sm"
-            >
-              {meal}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Dinner */}
-      <div className="mb-4">
-        <h4 className="text-white text-lg font-semibold mb-2">Dinner</h4>
-        <MealInput
-          onSelect={(meal) => addMeal("dinner", meal)}
-          placeholder="Add dinner item..."
-        />
-        <div className="mt-2 flex flex-wrap gap-2">
-          {meals[selectedDay]?.dinner?.map((meal, index) => (
-            <span
-              key={index}
-              className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm"
-            >
-              {meal}
-            </span>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   );
 };

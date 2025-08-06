@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SideNav from "../components/common/sideNav";
-import Footer from "../components/common/footer";
+// import Footer from "../components/common/footer";
 import Header from "../components/common/header";
 import DayCard from "../components/common/dayCard";
 import { getWeekStart } from "../utils/date.utils";
