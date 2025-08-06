@@ -4,6 +4,7 @@ import SideNav from "../components/common/sideNav";
 import Header from "../components/common/header";
 import DayCard from "../components/common/dayCard";
 import { getWeekStart } from "../utils/date.utils";
+import Badge from "../components/ui/badge";
 
 const Week = () => {
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });

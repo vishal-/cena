@@ -17,9 +17,13 @@ const DayCard: React.FC<DayCardProps> = ({
   addMeal,
 }) => {
   const mealTypes = [
-    { type: "breakfast" as const, title: "Breakfast", color: "bg-blue-600" },
-    { type: "lunch" as const, title: "Lunch", color: "bg-green-600" },
-    { type: "dinner" as const, title: "Dinner", color: "bg-purple-600" },
+    {
+      type: "breakfast" as const,
+      title: "Breakfast",
+      color: "blue",
+    },
+    { type: "lunch" as const, title: "Lunch", color: "green" },
+    { type: "dinner" as const, title: "Dinner", color: "purple" },
   ];
 
   return (
