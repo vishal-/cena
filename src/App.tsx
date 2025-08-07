@@ -2,7 +2,8 @@ import { Route, HashRouter, Routes, Navigate } from "react-router-dom";
 import Week from "./pages/week";
 import { AppPath } from "./lib/app.config";
 import SignInSignUp from "./pages/auth";
-import { UserProvider } from "./contexts/UserContext";
+import MealTypes from "./pages/mealTypes";
+import { UserProvider } from "./contexts/UserProvider";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path={AppPath.AUTH} element={<SignInSignUp />} />
+          <Route path={AppPath.MEAL_TYPES} element={<MealTypes />} />
           <Route path={AppPath.WEEK} element={<Week />} />
           <Route path="/" element={<Navigate to={AppPath.WEEK} />} />
         </Routes>

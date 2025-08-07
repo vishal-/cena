@@ -1,4 +1,5 @@
 export const AppPath = {
+  MEAL_TYPES: "/meal-types",
   AUTH: "/auth",
   WEEK: "/week"
 } as const;
