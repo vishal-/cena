@@ -73,3 +73,5 @@ export const cuisines = [
   "Hungarian",
   "Austrian"
 ];
+
+export type Cuisine = (typeof cuisines)[number];
