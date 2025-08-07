@@ -108,12 +108,14 @@ const DishForm: React.FC<DishFormProps> = ({ onSave, loading, initialData, isEdi
         />
       </div>
       <div className="mt-4">
+        <label className="block text-white mb-2">Recipe</label>
         <textarea
-          placeholder="Recipe"
+          placeholder="Recipe instructions (formatting like line breaks and spacing will be preserved)"
           value={dish.recipe || ""}
           onChange={(e) => setDish({ ...dish, recipe: e.target.value })}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          rows={4}
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
+          style={{ whiteSpace: 'pre-wrap' }}
+          rows={8}
         />
       </div>
       <button
