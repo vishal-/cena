@@ -3,6 +3,7 @@ import supabase from "../utils/supabase";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 import DishCard from "../components/common/dishCard";
+import NavHeader from "../components/common/navHeader";
 
 const UpdateDishes: React.FC = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
@@ -71,9 +72,7 @@ const UpdateDishes: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 min-h-screen">
-      <h2 className="text-3xl font-bold mb-8 text-center text-white">
-        Manage Dishes
-      </h2>
+      <NavHeader label="Dishes" />
 
       {/* Add New Dish Form */}
       {!editing && <DishForm onSave={handleSave} loading={loading} />}
