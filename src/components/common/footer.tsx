@@ -1,34 +1,8 @@
-import { useState, useEffect } from "react";
-import supabase from "../../utils/supabase";
+import { useUser } from "../../contexts/UserContext";
 
 // Footer component that displays copyright and social media links
 const Footer = () => {
-  const [userName, setUserName] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-      if (user) {
-        setUserName(user.user_metadata?.name || user.email);
-      }
-    };
-
-    getUser();
-
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange((_, session) => {
-      if (session?.user) {
-        setUserName(session.user.user_metadata?.name || session.user.email);
-      } else {
-        setUserName(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const { userName } = useUser();
 
   return (
     <footer className="footer p-3">
