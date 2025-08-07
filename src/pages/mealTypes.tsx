@@ -1,5 +1,6 @@
 // Component to manage meal types (add/edit functionality)
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import supabase from "../utils/supabase";
 
 interface MealType {
   id: number;
@@ -10,16 +11,42 @@ const MealTypes: React.FC = () => {
   const [mealTypes, setMealTypes] = useState<MealType[]>([]);
   const [newMealType, setNewMealType] = useState<string>("");
   const [editing, setEditing] = useState<MealType | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch meal types from Supabase
+  useEffect(() => {
+    const fetchMealTypes = async () => {
+      const { data, error } = await supabase
+        .from("MealType")
+        .select("*")
+        .order("id");
+
+      if (error) {
+        alert("Error fetching meal types: " + error.message);
+      } else {
+        setMealTypes(data || []);
+      }
+    };
+
+    fetchMealTypes();
+  }, []);
 
   // Add new meal type
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (newMealType.trim()) {
-      const newType: MealType = {
-        id: Date.now(),
-        name: newMealType.trim()
-      };
-      setMealTypes([...mealTypes, newType]);
-      setNewMealType("");
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("MealType")
+        .insert([{ name: newMealType.trim() }])
+        .select();
+
+      if (error) {
+        alert("Error adding meal type: " + error.message);
+      } else {
+        setMealTypes([...mealTypes, ...data]);
+        setNewMealType("");
+      }
+      setLoading(false);
     }
   };
 
@@ -29,22 +56,31 @@ const MealTypes: React.FC = () => {
   };
 
   // Save edited meal type
-  const handleSave = () => {
+  const handleSave = async () => {
     if (editing) {
-      setMealTypes(
-        mealTypes.map((mealType) =>
-          mealType.id === editing.id ? editing : mealType
-        )
-      );
-      setEditing(null);
+      setLoading(true);
+      const { error } = await supabase
+        .from("MealType")
+        .update({ name: editing.name })
+        .eq("id", editing.id);
+
+      if (error) {
+        alert("Error updating meal type: " + error.message);
+      } else {
+        setMealTypes(
+          mealTypes.map((mealType) =>
+            mealType.id === editing.id ? editing : mealType
+          )
+        );
+        setEditing(null);
+      }
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-        Meal Types
-      </h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">Meal Types</h2>
 
       <div className="rounded-lg shadow-md p-6 mb-8">
         <div className="flex flex-col sm:flex-row gap-4">
@@ -57,9 +93,10 @@ const MealTypes: React.FC = () => {
           />
           <button
             onClick={handleAdd}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            disabled={loading}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
           >
-            Add
+            {loading ? "Adding..." : "Add"}
           </button>
         </div>
       </div>
@@ -82,9 +119,10 @@ const MealTypes: React.FC = () => {
                 />
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+                  disabled={loading}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors disabled:opacity-50"
                 >
-                  Save
+                  {loading ? "Saving..." : "Save"}
                 </button>
               </div>
             ) : (
