@@ -18,9 +18,12 @@ const Header = ({ currentWeekStart, onPrevWeek, onNextWeek }: HeaderProps) => {
         prev
       </button>
 
-      <strong className="text-white font-semibold">
-        {formatDate(currentWeekStart)} - {formatDate(weekEnd)}
-      </strong>
+      <div className="text-center text-white mb-2">
+        <strong className="text-white font-semibold">
+          {formatDate(currentWeekStart)} - {formatDate(weekEnd)}
+        </strong>
+        <sub className="block mt-2">({currentWeekStart.getFullYear()})</sub>
+      </div>
 
       <button
         onClick={onNextWeek}
