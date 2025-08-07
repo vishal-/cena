@@ -1,4 +1,4 @@
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "../../hooks/useUser";
 
 // Footer component that displays copyright and social media links
 const Footer = () => {

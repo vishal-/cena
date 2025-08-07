@@ -1,18 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import type { User } from "@supabase/supabase-js";
+import React, { useState, useEffect } from "react";
 import supabase from "../utils/supabase";
-
-interface UserContextType {
-  user: User | null;
-  userName: string | null;
-}
-
-const UserContext = createContext<UserContextType>({
-  user: null,
-  userName: null
-});
-
-export const useUser = () => useContext(UserContext);
+import { UserContext } from "./userContext";
+import { User } from "@supabase/supabase-js";
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children
