@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import supabase from "../utils/supabase";
 
 const SignInSignUp: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [signInData, setSignInData] = useState({
     email: "",
     password: ""
@@ -13,14 +15,48 @@ const SignInSignUp: React.FC = () => {
     confirmPassword: ""
   });
 
-  const handleSignInSubmit = (event: React.FormEvent) => {
+  const handleSignInSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Sign In:", signInData);
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: signInData.email,
+      password: signInData.password
+    });
+
+    if (error) {
+      alert(error.message);
+    }
+    setLoading(false);
   };
 
-  const handleSignUpSubmit = (event: React.FormEvent) => {
+  const handleSignUpSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Sign Up:", signUpData);
+
+    if (signUpData.password !== signUpData.confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await supabase.auth.signUp({
+      email: signUpData.email,
+      password: signUpData.password,
+      options: {
+        data: {
+          name: signUpData.name,
+          display_name: signUpData.name
+        }
+      }
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Check your email for verification link");
+    }
+    setLoading(false);
   };
 
   return (
@@ -53,9 +89,10 @@ const SignInSignUp: React.FC = () => {
           />
           <button
             onClick={handleSignInSubmit}
-            className="w-full mt-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
+            className="w-full mt-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </div>
       ) : (
@@ -104,9 +141,10 @@ const SignInSignUp: React.FC = () => {
           />
           <button
             onClick={handleSignUpSubmit}
-            className="w-full mt-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
+            className="w-full mt-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </div>
       )}
