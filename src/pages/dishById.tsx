@@ -4,6 +4,7 @@ import supabase from "../utils/supabase";
 import DishCard from "../components/common/dishCard";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
+import NavHeader from "../components/common/navHeader";
 
 const DishById: React.FC = () => {
   const [dish, setDish] = useState<Dish | null>(null);
@@ -45,9 +46,9 @@ const DishById: React.FC = () => {
     fetchDish();
   }, [id]);
 
-  const handleSave = async (dishData: Omit<Dish, 'id'> | Dish) => {
+  const handleSave = async (dishData: Omit<Dish, "id"> | Dish) => {
     if (!dish) return;
-    
+
     setSaveLoading(true);
     const { error } = await supabase
       .from("Dishes")
@@ -93,13 +94,15 @@ const DishById: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 min-h-screen">
+      <NavHeader label={dish.name} />
+
       {isEditing ? (
         <div>
-          <DishForm 
-            onSave={handleSave} 
-            loading={saveLoading} 
-            initialData={dish} 
-            isEditing={true} 
+          <DishForm
+            onSave={handleSave}
+            loading={saveLoading}
+            initialData={dish}
+            isEditing={true}
           />
           <div className="flex gap-4 justify-center mt-4">
             <button
