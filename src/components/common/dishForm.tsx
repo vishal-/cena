@@ -42,9 +42,12 @@ const DishForm: React.FC<DishFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
-          placeholder="Dish Name *"
+          placeholder="Dish Name * (lowercase, numbers, hyphens only)"
           value={dish.name}
-          onChange={(e) => setDish({ ...dish, name: e.target.value })}
+          onChange={(e) => {
+            const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+            setDish({ ...dish, name: value });
+          }}
           className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <select

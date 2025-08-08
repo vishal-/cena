@@ -12,7 +12,7 @@ type DishSearchResult = {
   name: Dish["name"];
 };
 
-const UpdateDishes: React.FC = () => {
+const FindDishes: React.FC = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -143,4 +143,4 @@ const UpdateDishes: React.FC = () => {
   );
 };
 
-export default UpdateDishes;
+export default FindDishes;

@@ -4,7 +4,7 @@ import { AppPath } from "./lib/app.config";
 import SignInSignUp from "./pages/auth";
 import MealTypes from "./pages/mealTypes";
 import { UserProvider } from "./contexts/UserProvider";
-import UpdateDishes from "./pages/updateDishes";
+import FindDishes from "./pages/findDishes";
 import DishById from "./pages/dishById";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path={AppPath.AUTH} element={<SignInSignUp />} />
           <Route path={`${AppPath.DISH_BY_ID}/:id`} element={<DishById />} />
-          <Route path={AppPath.DISHES} element={<UpdateDishes />} />
+          <Route path={AppPath.DISHES} element={<FindDishes />} />
           <Route path={AppPath.MEAL_TYPES} element={<MealTypes />} />
           <Route path={AppPath.WEEK} element={<Week />} />
           <Route path="/" element={<Navigate to={AppPath.WEEK} />} />
