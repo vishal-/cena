@@ -1,69 +1,46 @@
-# React + TypeScript + Vite
+# Cena - Personal Recipe & Meal Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cena is a personal recipe and meal management application that helps you organize your favorite dishes, plan meals, and manage your culinary preferences.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Recipe Management
+- **Add & Edit Dishes**: Create detailed recipe entries with descriptions, cooking instructions, and nutritional information
+- **Rich Recipe Formatting**: Write recipes with preserved formatting including line breaks and spacing for clear step-by-step instructions
+- **Cuisine Categories**: Organize dishes by cuisine type for easy browsing
+- **Nutritional Tracking**: Track calories per serving and cooking time for each dish
+- **Video Links**: Attach YouTube recipe videos to your dishes for visual guidance
 
-## Expanding the ESLint configuration
+### Meal Planning
+- **Meal Types**: Categorize meals (breakfast, lunch, dinner, snacks, etc.)
+- **Weekly Planning**: Organize meals by day and meal type
+- **Prep Planning**: Mark dishes that require advance preparation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### User Experience
+- **Dark Theme**: Modern dark interface for comfortable viewing
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **User Authentication**: Secure personal recipe collection with user accounts
+- **Search & Filter**: Easily find recipes by cuisine, cooking time, or other criteria
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Personal Organization
+- **Custom Meal Categories**: Create and manage your own meal type categories
+- **Recipe Collections**: Build your personal cookbook with detailed dish information
+- **Prep Requirements**: Track which dishes need advance preparation
+- **Quick Access**: Fast navigation between different sections of your meal planning
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Create an account to start building your personal recipe collection
+2. Add your favorite dishes with detailed recipes and cooking information
+3. Organize meals by type and plan your weekly menu
+4. Use the search and filter features to quickly find the perfect recipe
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Benefits
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Centralized Recipe Storage**: Keep all your favorite recipes in one organized place
+- **Meal Planning Made Easy**: Plan your weekly meals with your personal recipe collection
+- **Cooking Efficiency**: Track prep requirements and cooking times to plan your kitchen time
+- **Recipe Discovery**: Link to video tutorials and organize by cuisine for cooking inspiration
+- **Personal Cookbook**: Build a comprehensive digital cookbook tailored to your tastes
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Cena transforms the way you manage recipes and plan meals, making cooking more organized and enjoyable.
