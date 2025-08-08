@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import supabase from "../utils/supabase";
 import DishCard from "../components/common/dishCard";
+import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 
 const DishById: React.FC = () => {
   const [dish, setDish] = useState<Dish | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams<{ id: string }>();
@@ -42,6 +45,28 @@ const DishById: React.FC = () => {
     fetchDish();
   }, [id]);
 
+  const handleSave = async (dishData: Omit<Dish, 'id'> | Dish) => {
+    if (!dish) return;
+    
+    setSaveLoading(true);
+    const { error } = await supabase
+      .from("Dishes")
+      .update(dishData)
+      .eq("id", dish.id);
+
+    if (error) {
+      alert("Error updating dish: " + error.message);
+    } else {
+      setDish({ ...dishData, id: dish.id } as Dish);
+      setIsEditing(false);
+    }
+    setSaveLoading(false);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-6 bg-gray-900 min-h-screen">
@@ -68,9 +93,38 @@ const DishById: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 min-h-screen">
-      <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-        <DishCard dish={dish} />
-      </div>
+      {isEditing ? (
+        <div>
+          <DishForm 
+            onSave={handleSave} 
+            loading={saveLoading} 
+            initialData={dish} 
+            isEditing={true} 
+          />
+          <div className="flex gap-4 justify-center mt-4">
+            <button
+              onClick={handleCancel}
+              className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+            <DishCard dish={dish} />
+          </div>
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

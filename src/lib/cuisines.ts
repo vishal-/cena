@@ -17,7 +17,6 @@ export const cuisines = [
   "Greek",
   "Turkish",
   "Brazilian",
-  "Lebanese",
   "German",
   "Peruvian",
   "Caribbean",

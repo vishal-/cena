@@ -3,23 +3,30 @@ import type { Dish } from "../../types/dish";
 import { cuisines } from "../../lib/cuisines";
 
 interface DishFormProps {
-  onSave: (dish: Omit<Dish, "id"> | Dish) => void;
+  onSave: (dish: Omit<Dish, "id"> | Dish) => void | Promise<void>;
   loading?: boolean;
   initialData?: Dish;
   isEditing?: boolean;
 }
 
-const DishForm: React.FC<DishFormProps> = ({ onSave, loading, initialData, isEditing }) => {
-  const [dish, setDish] = useState<Omit<Dish, "id"> | Dish>(initialData || {
-    name: "",
-    description: "",
-    recipe: "",
-    yt_link: "",
-    cuisine: "",
-    calorie_per_serving: undefined,
-    prep_required: false,
-    cookng_time: undefined
-  });
+const DishForm: React.FC<DishFormProps> = ({
+  onSave,
+  loading,
+  initialData,
+  isEditing
+}) => {
+  const [dish, setDish] = useState<Omit<Dish, "id"> | Dish>(
+    initialData || {
+      name: "",
+      description: "",
+      recipe: "",
+      yt_link: "",
+      cuisine: "",
+      calorie_per_serving: undefined,
+      prep_required: false,
+      cookng_time: undefined
+    }
+  );
 
   useEffect(() => {
     if (initialData) {
@@ -29,7 +36,9 @@ const DishForm: React.FC<DishFormProps> = ({ onSave, loading, initialData, isEdi
 
   return (
     <div className="bg-gray-800 rounded-lg shadow-md p-6 mb-8">
-      <h3 className="text-xl font-semibold mb-4 text-white">{isEditing ? "Edit Dish" : "Add New Dish"}</h3>
+      <h3 className="text-xl font-semibold mb-4 text-white">
+        {isEditing ? "Edit Dish" : "Add New Dish"}
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -114,7 +123,7 @@ const DishForm: React.FC<DishFormProps> = ({ onSave, loading, initialData, isEdi
           value={dish.recipe || ""}
           onChange={(e) => setDish({ ...dish, recipe: e.target.value })}
           className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
-          style={{ whiteSpace: 'pre-wrap' }}
+          style={{ whiteSpace: "pre-wrap" }}
           rows={8}
         />
       </div>
@@ -123,7 +132,13 @@ const DishForm: React.FC<DishFormProps> = ({ onSave, loading, initialData, isEdi
         disabled={loading}
         className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
       >
-        {loading ? (isEditing ? "Saving..." : "Adding...") : (isEditing ? "Save" : "Add Dish")}
+        {loading
+          ? isEditing
+            ? "Saving..."
+            : "Adding..."
+          : isEditing
+          ? "Save"
+          : "Add Dish"}
       </button>
     </div>
   );
