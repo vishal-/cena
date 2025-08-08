@@ -6,6 +6,7 @@ import MealTypes from "./pages/mealTypes";
 import { UserProvider } from "./contexts/UserProvider";
 import FindDishes from "./pages/findDishes";
 import DishById from "./pages/dishById";
+import AddDish from "./pages/addDish";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path={AppPath.AUTH} element={<SignInSignUp />} />
+          <Route path={AppPath.ADD_DISH} element={<AddDish />} />
           <Route path={`${AppPath.DISH_BY_ID}/:id`} element={<DishById />} />
           <Route path={AppPath.DISHES} element={<FindDishes />} />
           <Route path={AppPath.MEAL_TYPES} element={<MealTypes />} />
