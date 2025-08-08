@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Dish } from "../types/dish";
 import DishCard from "../components/common/dishCard";
 import NavHeader from "../components/common/navHeader";
+import Notify from "../components/ui/notify";
 import supabase from "../utils/supabase";
 
 const AddDish: React.FC = () => {
@@ -9,6 +10,7 @@ const AddDish: React.FC = () => {
   const [validatedDish, setValidatedDish] = useState<Omit<Dish, "id"> | null>(null);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   const validateJson = () => {
     try {
@@ -36,8 +38,9 @@ const AddDish: React.FC = () => {
       .insert([validatedDish]);
 
     if (error) {
-      setError("Error saving dish: " + error.message);
+      setNotification({ message: "Error saving dish: " + error.message, type: "error" });
     } else {
+      setNotification({ message: "Dish saved successfully!", type: "success" });
       setJsonInput("");
       setValidatedDish(null);
       setError("");
@@ -81,6 +84,14 @@ const AddDish: React.FC = () => {
         <div className="mb-6 p-4 bg-red-900 border border-red-700 rounded-lg">
           <p className="text-red-300">{error}</p>
         </div>
+      )}
+
+      {notification && (
+        <Notify
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
       )}
 
       {validatedDish && (
