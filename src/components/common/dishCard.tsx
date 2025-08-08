@@ -1,4 +1,5 @@
 import type { Dish } from "../../types/dish";
+import { formatDateWithYear } from "../../utils/date.utils";
 
 const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
   return (
@@ -52,6 +53,21 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
           <strong>Recipe:</strong> {dish.recipe}
         </p>
       )}
+
+      <div className="mt-4 pt-4 border-t border-gray-700 grid md:grid-cols-2">
+        <p className="text-sm text-gray-400">
+          Updated by:&#160;
+          <span className="text-gray-300">{dish.updated_by}</span>
+        </p>
+        {dish.updated_at && (
+          <p className="text-sm text-gray-400">
+            Updated at:&#160;
+            <span className="text-gray-300">
+              {formatDateWithYear(new Date(dish.updated_at))}
+            </span>
+          </p>
+        )}
+      </div>
     </div>
   );
 };

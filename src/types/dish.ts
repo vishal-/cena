@@ -8,4 +8,6 @@ export interface Dish {
   calorie_per_serving?: number;
   prep_required?: boolean;
   cookng_time?: number;
+  updated_at?: string;
+  updated_by?: string;
 }
