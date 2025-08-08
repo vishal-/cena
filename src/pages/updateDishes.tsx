@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import supabase from "../utils/supabase";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
-import DishCard from "../components/common/dishCard";
 import NavHeader from "../components/common/navHeader";
+import { AppPath } from "../lib/app.config";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const UpdateDishes: React.FC = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
@@ -56,7 +58,7 @@ const UpdateDishes: React.FC = () => {
       <NavHeader label="Dishes" />
 
       {/* Search Bar */}
-      <div className="mb-6 flex gap-2">
+      <div className="mb-6 flex flex-col sm:flex-row gap-2">
         <input
           type="text"
           value={searchTerm}
@@ -67,7 +69,7 @@ const UpdateDishes: React.FC = () => {
         <button
           onClick={handleSearch}
           disabled={searchTerm.length < 3}
-          className={`px-6 py-3 rounded-md font-medium ${
+          className={`px-6 py-3 rounded-md font-medium whitespace-nowrap ${
             searchTerm.length >= 3
               ? "bg-blue-600 hover:bg-blue-700 text-white"
               : "bg-gray-600 text-gray-400 cursor-not-allowed"
@@ -111,14 +113,17 @@ const UpdateDishes: React.FC = () => {
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {filteredDishes.map((dish) => (
-          <div
+          <Link
             key={dish.id}
-            className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6"
+            to={`${AppPath.DISH_BY_ID}/${dish.id}`}
+            className="block bg-gray-800 rounded-lg border border-gray-700 p-4 hover:bg-gray-700 transition-colors"
           >
-            <DishCard dish={dish} />
-          </div>
+            <div className="text-white font-medium">
+              {dish.name} <FaExternalLinkAlt className="inline ms-2" />
+            </div>
+          </Link>
         ))}
       </div>
 

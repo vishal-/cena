@@ -13,7 +13,7 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path={AppPath.AUTH} element={<SignInSignUp />} />
-          <Route path={AppPath.DISH_BY_ID} element={<DishById />} />
+          <Route path={`${AppPath.DISH_BY_ID}/:id`} element={<DishById />} />
           <Route path={AppPath.DISHES} element={<UpdateDishes />} />
           <Route path={AppPath.MEAL_TYPES} element={<MealTypes />} />
           <Route path={AppPath.WEEK} element={<Week />} />
