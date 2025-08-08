@@ -7,19 +7,24 @@ import NavHeader from "../components/common/navHeader";
 import { AppPath } from "../lib/app.config";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
+type DishSearchResult = {
+  id: Dish["id"];
+  name: Dish["name"];
+};
+
 const UpdateDishes: React.FC = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredDishes, setFilteredDishes] = useState<Dish[]>([]);
+  const [filteredDishes, setFilteredDishes] = useState<DishSearchResult[]>([]);
 
   const handleSearch = async () => {
     if (searchTerm.length >= 3) {
       setLoading(true);
       const { data, error } = await supabase
         .from("Dishes")
-        .select("*")
+        .select("id, name")
         .ilike("name", `%${searchTerm}%`)
         .order("id");
 
