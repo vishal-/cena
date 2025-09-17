@@ -16,8 +16,16 @@ export const getWeekEnd = (startDate: Date) => {
 export const formatDate = (date: Date) => {
   return date.toLocaleDateString("en-US", {
     month: "short",
-    day: "numeric",
+    day: "numeric"
     // year: "numeric",
+  });
+};
+
+export const formatDateWithYear = (date: Date) => {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
   });
 };
 
@@ -28,6 +36,6 @@ export const getDateForDay = (dayName: string, currentWeekStart: Date) => {
   return targetDate.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
-    year: "numeric",
+    year: "numeric"
   });
 };

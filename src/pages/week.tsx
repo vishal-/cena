@@ -1,10 +1,9 @@
 import { useState } from "react";
 import SideNav from "../components/common/sideNav";
-// import Footer from "../components/common/footer";
+import Footer from "../components/common/footer";
 import Header from "../components/common/header";
 import DayCard from "../components/common/dayCard";
 import { getWeekStart } from "../utils/date.utils";
-import Badge from "../components/ui/badge";
 
 const Week = () => {
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
@@ -24,8 +23,8 @@ const Week = () => {
       ...prev,
       [selectedDay]: {
         ...prev[selectedDay],
-        [mealType]: [...(prev[selectedDay]?.[mealType] || []), meal],
-      },
+        [mealType]: [...(prev[selectedDay]?.[mealType] || []), meal]
+      }
     }));
   };
 
@@ -68,6 +67,7 @@ const Week = () => {
       {/* <div className="h-[30%]">
         <Footer />
       </div> */}
+      <Footer />
     </div>
   );
 };
