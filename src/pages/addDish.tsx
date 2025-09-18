@@ -3,7 +3,7 @@ import type { Dish } from "../types/dish";
 import DishCard from "../components/common/dishCard";
 import NavHeader from "../components/common/navHeader";
 import Notify from "../components/ui/notify";
-import supabase from "../utils/supabase";
+import { tablesDB } from "../utils/appwrite";
 
 const AddDish: React.FC = () => {
   const [jsonInput, setJsonInput] = useState<string>("");
@@ -33,17 +33,20 @@ const AddDish: React.FC = () => {
     if (!validatedDish) return;
     
     setLoading(true);
-    const { error } = await supabase
-      .from("Dishes")
-      .insert([validatedDish]);
+    try {
+      await tablesDB.createRow({
+        databaseId: "databaseId",
+        tableId: "dishesCollectionId",
+        rowId: "unique()",
+        data: validatedDish
+      });
 
-    if (error) {
-      setNotification({ message: "Error saving dish: " + error.message, type: "error" });
-    } else {
       setNotification({ message: "Dish saved successfully!", type: "success" });
       setJsonInput("");
       setValidatedDish(null);
       setError("");
+    } catch (error) {
+      setNotification({ message: "Error saving dish: " + error.message, type: "error" });
     }
     setLoading(false);
   };

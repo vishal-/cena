@@ -25,7 +25,11 @@ const DishById: React.FC = () => {
 
       try {
         setLoading(true);
-        const response = await tablesDB.get("dishesCollectionId", id);
+        const response = await tablesDB.getRow({
+          databaseId: "databaseId",
+          tableId: "dishesCollectionId",
+          rowId: id
+        });
         setDish(response);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -41,16 +45,17 @@ const DishById: React.FC = () => {
     if (!dish) return;
 
     setSaveLoading(true);
-    const { error } = await supabase
-      .from("Dishes")
-      .update(dishData)
-      .eq("id", dish.id);
-
-    if (error) {
-      alert("Error updating dish: " + error.message);
-    } else {
+    try {
+      await tablesDB.updateRow({
+        databaseId: "databaseId",
+        tableId: "dishesCollectionId",
+        rowId: dish.id,
+        data: dishData
+      });
       setDish({ ...dishData, id: dish.id } as Dish);
       setIsEditing(false);
+    } catch (error) {
+      alert("Error updating dish: " + error.message);
     }
     setSaveLoading(false);
   };

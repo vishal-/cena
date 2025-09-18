@@ -17,8 +17,11 @@ const MealTypes: React.FC = () => {
   useEffect(() => {
     const fetchMealTypes = async () => {
       try {
-        const response = await tablesDB.list("mealTypesCollectionId");
-        setMealTypes(response.documents);
+        const response = await tablesDB.listRows({
+          databaseId: "databaseId",
+          tableId: "mealTypesCollectionId"
+        });
+        setMealTypes(response.rows as MealType[]);
       } catch (error) {
         alert("Error fetching meal types: " + error.message);
       }
@@ -32,10 +35,13 @@ const MealTypes: React.FC = () => {
     if (newMealType.trim()) {
       setLoading(true);
       try {
-        const response = await tablesDB.create("mealTypesCollectionId", {
-          name: newMealType.trim()
+        const response = await tablesDB.createRow({
+          databaseId: "databaseId",
+          tableId: "mealTypesCollectionId",
+          rowId: "unique()",
+          data: { name: newMealType.trim() }
         });
-        setMealTypes((prev) => [...prev, response]);
+        setMealTypes((prev) => [...prev, response as MealType]);
       } catch (error) {
         alert("Error adding meal type: " + error.message);
       } finally {
@@ -54,8 +60,11 @@ const MealTypes: React.FC = () => {
     if (editing) {
       setLoading(true);
       try {
-        await tablesDB.update("mealTypesCollectionId", editing.id, {
-          name: editing.name
+        await tablesDB.updateRow({
+          databaseId: "databaseId",
+          tableId: "mealTypesCollectionId",
+          rowId: editing.id,
+          data: { name: editing.name }
         });
         setMealTypes(
           mealTypes.map((mealType) =>

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { tablesDB } from "../utils/appwrite";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 import NavHeader from "../components/common/navHeader";
 import { AppPath } from "../lib/app.config";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import Notify from "../components/ui/notify";
 
 type DishSearchResult = {
   id: Dish["id"];
@@ -17,17 +19,22 @@ const FindDishes: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDishes, setFilteredDishes] = useState<DishSearchResult[]>([]);
+  const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   const handleSearch = async () => {
     if (searchTerm.length >= 3) {
       setLoading(true);
       try {
-        const response = await tablesDB.list("dishesCollectionId", {
-          filters: [`name.contains.${searchTerm}`]
+        const response = await tablesDB.listRows({
+          databaseId: "databaseId",
+          tableId: "dishesCollectionId"
         });
-        setFilteredDishes(response.documents);
+        const filtered = response.rows.filter((dish: any) => 
+          dish.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredDishes(filtered as unknown as DishSearchResult[]);
       } catch (error) {
-        alert("Error searching dishes: " + error.message);
+        setNotification({ message: "Error searching dishes: " + (error instanceof Error ? error.message : String(error)), type: "error" });
         setFilteredDishes([]);
       } finally {
         setLoading(false);
@@ -41,16 +48,18 @@ const FindDishes: React.FC = () => {
     if (!dishData.name.trim()) return;
 
     setLoading(true);
-    const { data, error } = await supabase
-      .from("Dishes")
-      .insert([dishData])
-      .select();
-
-    if (error) {
-      alert("Error adding dish: " + error.message);
-    } else {
-      setDishes([...dishes, ...data]);
+    try {
+      const response = await tablesDB.createRow({
+        databaseId: "databaseId",
+        tableId: "dishesCollectionId",
+        rowId: "unique()",
+        data: dishData
+      });
+      setDishes([...dishes, response as unknown as Dish]);
       setShowAddForm(false);
+      setNotification({ message: "Dish added successfully!", type: "success" });
+    } catch (error) {
+      setNotification({ message: "Error adding dish: " + (error instanceof Error ? error.message : String(error)), type: "error" });
     }
     setLoading(false);
   };
@@ -135,6 +144,14 @@ const FindDishes: React.FC = () => {
             No dishes found matching "{searchTerm}"
           </div>
         </div>
+      )}
+
+      {notification && (
+        <Notify
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
       )}
     </div>
   );

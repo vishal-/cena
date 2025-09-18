@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import supabase from "../utils/supabase";
+import { account } from "../utils/appwrite";
 
 const SignInSignUp: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -19,12 +19,12 @@ const SignInSignUp: React.FC = () => {
     event.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: signInData.email,
-      password: signInData.password
-    });
-
-    if (error) {
+    try {
+      await account.createEmailPasswordSession(
+        signInData.email,
+        signInData.password
+      );
+    } catch (error) {
       alert(error.message);
     }
     setLoading(false);
@@ -40,21 +40,16 @@ const SignInSignUp: React.FC = () => {
 
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
-      email: signUpData.email,
-      password: signUpData.password,
-      options: {
-        data: {
-          name: signUpData.name,
-          display_name: signUpData.name
-        }
-      }
-    });
-
-    if (error) {
+    try {
+      await account.create(
+        "unique()",
+        signUpData.email,
+        signUpData.password,
+        signUpData.name
+      );
+      alert("Account created successfully!");
+    } catch (error) {
       alert(error.message);
-    } else {
-      alert("Check your email for verification link");
     }
     setLoading(false);
   };
