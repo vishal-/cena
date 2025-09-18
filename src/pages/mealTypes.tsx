@@ -1,9 +1,9 @@
 // Component to manage meal types (add/edit functionality)
 import React, { useState, useEffect } from "react";
-import supabase from "../utils/supabase";
+import { tablesDB } from "../utils/appwrite";
 
 interface MealType {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -13,18 +13,14 @@ const MealTypes: React.FC = () => {
   const [editing, setEditing] = useState<MealType | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Fetch meal types from Supabase
+  // Fetch meal types from Appwrite
   useEffect(() => {
     const fetchMealTypes = async () => {
-      const { data, error } = await supabase
-        .from("MealType")
-        .select("*")
-        .order("id");
-
-      if (error) {
+      try {
+        const response = await tablesDB.list("mealTypesCollectionId");
+        setMealTypes(response.documents);
+      } catch (error) {
         alert("Error fetching meal types: " + error.message);
-      } else {
-        setMealTypes(data || []);
       }
     };
 
@@ -35,18 +31,16 @@ const MealTypes: React.FC = () => {
   const handleAdd = async () => {
     if (newMealType.trim()) {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("MealType")
-        .insert([{ name: newMealType.trim() }])
-        .select();
-
-      if (error) {
+      try {
+        const response = await tablesDB.create("mealTypesCollectionId", {
+          name: newMealType.trim()
+        });
+        setMealTypes((prev) => [...prev, response]);
+      } catch (error) {
         alert("Error adding meal type: " + error.message);
-      } else {
-        setMealTypes([...mealTypes, ...data]);
-        setNewMealType("");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
@@ -59,22 +53,21 @@ const MealTypes: React.FC = () => {
   const handleSave = async () => {
     if (editing) {
       setLoading(true);
-      const { error } = await supabase
-        .from("MealType")
-        .update({ name: editing.name })
-        .eq("id", editing.id);
-
-      if (error) {
-        alert("Error updating meal type: " + error.message);
-      } else {
+      try {
+        await tablesDB.update("mealTypesCollectionId", editing.id, {
+          name: editing.name
+        });
         setMealTypes(
           mealTypes.map((mealType) =>
             mealType.id === editing.id ? editing : mealType
           )
         );
         setEditing(null);
+      } catch (error) {
+        alert("Error updating meal type: " + error.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 

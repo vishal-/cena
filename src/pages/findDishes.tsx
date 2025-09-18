@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import supabase from "../utils/supabase";
+import { tablesDB } from "../utils/appwrite";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 import NavHeader from "../components/common/navHeader";
@@ -22,19 +21,17 @@ const FindDishes: React.FC = () => {
   const handleSearch = async () => {
     if (searchTerm.length >= 3) {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("Dishes")
-        .select("id, name")
-        .ilike("name", `%${searchTerm}%`)
-        .order("id");
-
-      if (error) {
+      try {
+        const response = await tablesDB.list("dishesCollectionId", {
+          filters: [`name.contains.${searchTerm}`]
+        });
+        setFilteredDishes(response.documents);
+      } catch (error) {
         alert("Error searching dishes: " + error.message);
         setFilteredDishes([]);
-      } else {
-        setFilteredDishes(data || []);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     } else {
       setFilteredDishes([]);
     }

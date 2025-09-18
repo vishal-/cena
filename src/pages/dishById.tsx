@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import supabase from "../utils/supabase";
+import { tablesDB } from "../utils/appwrite";
 import DishCard from "../components/common/dishCard";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
@@ -25,17 +25,8 @@ const DishById: React.FC = () => {
 
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("Dishes")
-          .select("*")
-          .eq("id", id)
-          .single();
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        setDish(data);
+        const response = await tablesDB.get("dishesCollectionId", id);
+        setDish(response);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
