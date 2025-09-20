@@ -10,6 +10,7 @@ import {
   formatErrorMessage,
   getErrorMessageWithFallback
 } from "../utils/error.utils";
+import { toApiDish } from "../utils/dishTransform";
 
 const AddDish: React.FC = () => {
   const [jsonInput, setJsonInput] = useState<string>("");
@@ -50,7 +51,7 @@ const AddDish: React.FC = () => {
         databaseId: DATABASE_CONFIG.databaseId,
         tableId: DATABASE_CONFIG.collections.dishes,
         rowId: "unique()",
-        data: validatedDish
+        data: toApiDish(validatedDish as Dish)
       });
 
       setNotification({ message: "Dish saved successfully!", type: "success" });
@@ -75,7 +76,7 @@ const AddDish: React.FC = () => {
         databaseId: DATABASE_CONFIG.databaseId,
         tableId: DATABASE_CONFIG.collections.dishes,
         rowId: "unique()",
-        data: dishData
+        data: toApiDish({ ...dishData, id: "", updatedAt: "" } as Dish)
       });
 
       setNotification({ message: "Dish saved successfully!", type: "success" });
@@ -133,7 +134,16 @@ const AddDish: React.FC = () => {
           <textarea
             value={jsonInput}
             onChange={(e) => setJsonInput(e.target.value)}
-            placeholder="Enter dish JSON here..."
+            placeholder={`{
+  "name": "Chicken Tikka Masala",
+  "description": "Creamy and flavorful Indian curry with tender chicken pieces",
+  "recipe": "1. Marinate chicken in yogurt and spices for 2 hours\\n2. Grill or bake chicken until cooked\\n3. Cook onions, garlic, and ginger\\n4. Add tomatoes and spices\\n5. Stir in cream and simmer\\n6. Add grilled chicken and cook for 10 minutes",
+  "ytLink": "https://www.youtube.com/watch?v=example",
+  "cuisine": "Indian",
+  "caloriePerServing": 450,
+  "prepRequired": true,
+  "cookingTime": 45
+}`}
             className="w-full h-64 p-4 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none font-mono"
           />
 
@@ -175,7 +185,7 @@ const AddDish: React.FC = () => {
       {validatedDish && activeTab === "json" && (
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Preview:</h3>
-          <DishCard dish={{ ...validatedDish, id: 0 }} />
+          <DishCard dish={{ ...validatedDish, id: "" }} />
         </div>
       )}
     </div>

@@ -7,9 +7,9 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
       <div className="flex justify-between items-start mb-6">
         <h3 className="text-xl font-semibold text-white">{dish.name}</h3>
 
-        {dish.yt_link && (
+        {dish.ytLink && (
           <a
-            href={dish.yt_link}
+            href={dish.ytLink}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 hover:underline text-sm"
@@ -30,19 +30,19 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
             <strong>Cuisine:</strong> {dish.cuisine}
           </div>
         )}
-        {dish.calorie_per_serving && (
+        {dish.caloriePerServing && (
           <div>
-            <strong>Calories:</strong> {dish.calorie_per_serving}
+            <strong>Calories:</strong> {dish.caloriePerServing}
           </div>
         )}
-        {dish.cookng_time && (
+        {dish.cookingTime && (
           <div>
-            <strong>Cooking Time:</strong> {dish.cookng_time} min
+            <strong>Cooking Time:</strong> {dish.cookingTime} min
           </div>
         )}
         <div>
           <strong>Prep Required:</strong>&#160;
-          {dish.prep_required ? "Yes" : "No"}
+          {dish.prepRequired ? "Yes" : "No"}
         </div>
       </div>
       {dish.description && (
@@ -57,13 +57,13 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
       <div className="mt-4 pt-4 border-t border-gray-700 grid md:grid-cols-2">
         <p className="text-sm text-gray-400">
           Updated by:&#160;
-          <span className="text-gray-300">{dish.updated_by}</span>
+          <span className="text-gray-300">{dish.owner}</span>
         </p>
-        {dish.updated_at && (
+        {dish.updatedAt && (
           <p className="text-sm text-gray-400">
             Updated at:&#160;
             <span className="text-gray-300">
-              {formatDateWithYear(new Date(dish.updated_at))}
+              {formatDateWithYear(new Date(dish.updatedAt))}
             </span>
           </p>
         )}

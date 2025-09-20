@@ -20,11 +20,13 @@ const DishForm: React.FC<DishFormProps> = ({
       name: "",
       description: "",
       recipe: "",
-      yt_link: "",
+      ytLink: "",
       cuisine: "",
-      calorie_per_serving: undefined,
-      prep_required: false,
-      cookng_time: undefined
+      caloriePerServing: undefined,
+      prepRequired: false,
+      cookingTime: undefined,
+      owner: "",
+      updatedAt: ""
     }
   );
 
@@ -45,7 +47,9 @@ const DishForm: React.FC<DishFormProps> = ({
           placeholder="Dish Name * (lowercase, numbers, hyphens only)"
           value={dish.name}
           onChange={(e) => {
-            const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+            const value = e.target.value
+              .toLowerCase()
+              .replace(/[^a-z0-9-]/g, "");
             setDish({ ...dish, name: value });
           }}
           className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -65,11 +69,11 @@ const DishForm: React.FC<DishFormProps> = ({
         <input
           type="number"
           placeholder="Calories per serving"
-          value={dish.calorie_per_serving || ""}
+          value={dish.caloriePerServing || ""}
           onChange={(e) =>
             setDish({
               ...dish,
-              calorie_per_serving: e.target.value
+              caloriePerServing: e.target.value
                 ? Number(e.target.value)
                 : undefined
             })
@@ -79,11 +83,11 @@ const DishForm: React.FC<DishFormProps> = ({
         <input
           type="number"
           placeholder="Cooking time (minutes)"
-          value={dish.cookng_time || ""}
+          value={dish.cookingTime || ""}
           onChange={(e) =>
             setDish({
               ...dish,
-              cookng_time: e.target.value ? Number(e.target.value) : undefined
+              cookingTime: e.target.value ? Number(e.target.value) : undefined
             })
           }
           className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -91,17 +95,17 @@ const DishForm: React.FC<DishFormProps> = ({
         <input
           type="url"
           placeholder="YouTube Link"
-          value={dish.yt_link || ""}
-          onChange={(e) => setDish({ ...dish, yt_link: e.target.value })}
+          value={dish.ytLink || ""}
+          onChange={(e) => setDish({ ...dish, ytLink: e.target.value })}
           className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <div className="flex items-center">
           <input
             type="checkbox"
             id="prep_required"
-            checked={dish.prep_required || false}
+            checked={dish.prepRequired || false}
             onChange={(e) =>
-              setDish({ ...dish, prep_required: e.target.checked })
+              setDish({ ...dish, prepRequired: e.target.checked })
             }
             className="mr-2"
           />

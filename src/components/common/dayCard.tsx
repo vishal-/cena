@@ -1,6 +1,5 @@
 import { getDateForDay } from "../../utils/date.utils";
-import MealMenu from "./MealMenu";
-import { MEAL_TYPES } from "../../config/database";
+import MealMenu from "./mealMenu";
 
 interface DayCardProps {
   selectedDay: string;
@@ -15,7 +14,7 @@ const DayCard: React.FC<DayCardProps> = ({
   selectedDay,
   currentWeekStart,
   meals,
-  addMeal,
+  addMeal
 }) => {
   const mealTypes = [
     { type: "breakfast" as const, title: "Breakfast", color: "blue" },

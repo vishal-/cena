@@ -8,6 +8,7 @@ import { FaExternalLinkAlt, FaPlus } from "react-icons/fa";
 import Notify from "../components/ui/notify";
 import { DATABASE_CONFIG } from "../config/database";
 import { formatErrorMessage } from "../utils/error.utils";
+import { fromApiDish, ApiDish } from "../utils/dishTransform";
 
 type DishSearchResult = {
   id: Dish["id"];
@@ -31,10 +32,14 @@ const FindDishes: React.FC = () => {
           databaseId: DATABASE_CONFIG.databaseId,
           tableId: DATABASE_CONFIG.collections.dishes
         });
-        const filtered = response.rows.filter((dish: unknown) =>
-          (dish as Dish).name.toLowerCase().includes(searchTerm.toLowerCase())
+        const filtered = response.rows
+          .map((row) => fromApiDish(row as unknown as ApiDish))
+          .filter((dish) =>
+            dish.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        setFilteredDishes(
+          filtered.map((dish) => ({ id: dish.id, name: dish.name }))
         );
-        setFilteredDishes(filtered as unknown as DishSearchResult[]);
       } catch (error) {
         setNotification({
           message: formatErrorMessage("Error searching dishes", error),
