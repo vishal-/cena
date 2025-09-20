@@ -5,34 +5,43 @@ import NavHeader from "../components/common/navHeader";
 import Notify from "../components/ui/notify";
 import { tablesDB } from "../utils/appwrite";
 import { DATABASE_CONFIG } from "../config/database";
+import {
+  formatErrorMessage,
+  getErrorMessageWithFallback
+} from "../utils/error.utils";
 
 const AddDish: React.FC = () => {
   const [jsonInput, setJsonInput] = useState<string>("");
-  const [validatedDish, setValidatedDish] = useState<Omit<Dish, "id"> | null>(null);
+  const [validatedDish, setValidatedDish] = useState<Omit<Dish, "id"> | null>(
+    null
+  );
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const validateJson = () => {
     try {
       const dishData = JSON.parse(jsonInput);
-      
+
       // Basic validation for required fields
-      if (!dishData.name || typeof dishData.name !== 'string') {
-        throw new Error('Name is required and must be a string');
+      if (!dishData.name || typeof dishData.name !== "string") {
+        throw new Error("Name is required and must be a string");
       }
-      
+
       setValidatedDish(dishData);
       setError("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid JSON format");
+      setError(getErrorMessageWithFallback(err, "Invalid JSON format"));
       setValidatedDish(null);
     }
   };
 
   const handleSave = async () => {
     if (!validatedDish) return;
-    
+
     setLoading(true);
     try {
       await tablesDB.createRow({
@@ -47,7 +56,10 @@ const AddDish: React.FC = () => {
       setValidatedDish(null);
       setError("");
     } catch (error) {
-      setNotification({ message: "Error saving dish: " + error.message, type: "error" });
+      setNotification({
+        message: formatErrorMessage("Error saving dish", error),
+        type: "error"
+      });
     }
     setLoading(false);
   };
@@ -55,7 +67,7 @@ const AddDish: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 min-h-screen">
       <NavHeader label="Add Dish via JSON" />
-      
+
       <div className="mb-6">
         <textarea
           value={jsonInput}
@@ -63,7 +75,7 @@ const AddDish: React.FC = () => {
           placeholder="Enter dish JSON here..."
           className="w-full h-64 p-4 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none font-mono"
         />
-        
+
         <div className="flex gap-4 mt-4">
           <button
             onClick={validateJson}
@@ -71,7 +83,7 @@ const AddDish: React.FC = () => {
           >
             Validate JSON
           </button>
-          
+
           {validatedDish && (
             <button
               onClick={handleSave}

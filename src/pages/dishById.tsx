@@ -7,6 +7,10 @@ import type { Dish } from "../types/dish";
 import NavHeader from "../components/common/navHeader";
 import Notify from "../components/ui/notify";
 import { DATABASE_CONFIG } from "../config/database";
+import {
+  formatErrorMessage,
+  getErrorMessageWithFallback
+} from "../utils/error.utils";
 
 const DishById: React.FC = () => {
   const [dish, setDish] = useState<Dish | null>(null);
@@ -44,7 +48,7 @@ const DishById: React.FC = () => {
           ...(response as Omit<Dish, "id" | "name" | "owner">)
         });
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        setError(getErrorMessageWithFallback(err, "An error occurred"));
       } finally {
         setLoading(false);
       }
@@ -72,9 +76,7 @@ const DishById: React.FC = () => {
       });
     } catch (error) {
       setNotification({
-        message:
-          "Error updating dish: " +
-          (error instanceof Error ? error.message : String(error)),
+        message: formatErrorMessage("Error updating dish", error),
         type: "error"
       });
     }

@@ -8,6 +8,7 @@ import { AppPath } from "../lib/app.config";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Notify from "../components/ui/notify";
 import { DATABASE_CONFIG } from "../config/database";
+import { formatErrorMessage } from "../utils/error.utils";
 
 type DishSearchResult = {
   id: Dish["id"];
@@ -20,7 +21,10 @@ const FindDishes: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDishes, setFilteredDishes] = useState<DishSearchResult[]>([]);
-  const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const handleSearch = async () => {
     if (searchTerm.length >= 3) {
@@ -30,12 +34,15 @@ const FindDishes: React.FC = () => {
           databaseId: DATABASE_CONFIG.databaseId,
           tableId: DATABASE_CONFIG.collections.dishes
         });
-        const filtered = response.rows.filter((dish: any) => 
+        const filtered = response.rows.filter((dish: any) =>
           dish.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredDishes(filtered as unknown as DishSearchResult[]);
       } catch (error) {
-        setNotification({ message: "Error searching dishes: " + (error instanceof Error ? error.message : String(error)), type: "error" });
+        setNotification({
+          message: formatErrorMessage("Error searching dishes", error),
+          type: "error"
+        });
         setFilteredDishes([]);
       } finally {
         setLoading(false);
@@ -60,7 +67,10 @@ const FindDishes: React.FC = () => {
       setShowAddForm(false);
       setNotification({ message: "Dish added successfully!", type: "success" });
     } catch (error) {
-      setNotification({ message: "Error adding dish: " + (error instanceof Error ? error.message : String(error)), type: "error" });
+      setNotification({
+        message: formatErrorMessage("Error adding dish", error),
+        type: "error"
+      });
     }
     setLoading(false);
   };
