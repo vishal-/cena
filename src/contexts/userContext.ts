@@ -1,67 +1,14 @@
-import { createContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
-import { account } from "../utils/appwrite";
+import { createContext } from "react";
+import type { Models } from "appwrite";
 
 export interface UserContextType {
-  user: any | null; // Replace 'any' with the appropriate Appwrite user type
+  user: Models.User<Models.Preferences> | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  login: async () => { },
-  logout: async () => { },
+  login: async () => {},
+  logout: async () => {}
 });
-
-interface UserProviderProps {
-  children: ReactNode;
-}
-
-// Define a custom OAuthProvider type
-export type OAuthProvider = "google";
-
-export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<any | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const currentUser = await account.get();
-        setUser(currentUser);
-      } catch {
-        setUser(null);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-  const login = async () => {
-    try {
-      await account.createOAuth2Session(
-        "google" as any,
-        "http://localhost:3000",
-        "http://localhost:3000/logout"
-      );
-    } catch (error) {
-      console.error("Login failed", error);
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await account.deleteSession("current");
-      setUser(null);
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  };
-
-  return (
-    <UserContext.Provider value= {{ user, login, logout }
-}>
-  { children }
-  </UserContext.Provider>
-  );
-};
