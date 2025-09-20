@@ -5,6 +5,7 @@ import DishCard from "../components/common/dishCard";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 import NavHeader from "../components/common/navHeader";
+import Notify from "../components/ui/notify";
 import { DATABASE_CONFIG } from "../config/database";
 
 const DishById: React.FC = () => {
@@ -13,6 +14,10 @@ const DishById: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const { id } = useParams<{ id: string }>();
 
@@ -31,7 +36,13 @@ const DishById: React.FC = () => {
           tableId: DATABASE_CONFIG.collections.dishes,
           rowId: id
         });
-        setDish(response);
+        // Map response to Dish type
+        setDish({
+          id: response.id,
+          name: response.name,
+          owner: response.owner,
+          ...(response as Omit<Dish, "id" | "name" | "owner">)
+        });
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -50,13 +61,22 @@ const DishById: React.FC = () => {
       await tablesDB.updateRow({
         databaseId: DATABASE_CONFIG.databaseId,
         tableId: DATABASE_CONFIG.collections.dishes,
-        rowId: dish.id,
+        rowId: dish.id.toString(),
         data: dishData
       });
       setDish({ ...dishData, id: dish.id } as Dish);
       setIsEditing(false);
+      setNotification({
+        message: "Dish updated successfully!",
+        type: "success"
+      });
     } catch (error) {
-      alert("Error updating dish: " + error.message);
+      setNotification({
+        message:
+          "Error updating dish: " +
+          (error instanceof Error ? error.message : String(error)),
+        type: "error"
+      });
     }
     setSaveLoading(false);
   };
@@ -124,6 +144,14 @@ const DishById: React.FC = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {notification && (
+        <Notify
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
       )}
     </div>
   );

@@ -1,13 +1,13 @@
 export const DATABASE_CONFIG = {
-  databaseId: "databaseId",
+  databaseId: "68caeae0000cb5ecc134",
   collections: {
-    dishes: "dishesCollectionId"
+    dishes: "dishes"
   }
 } as const;
 
 export const MEAL_TYPES = [
   "Breakfast",
-  "Lunch", 
+  "Lunch",
   "Dinner",
   "Snack",
   "Dessert",
