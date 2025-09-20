@@ -5,6 +5,7 @@ import DishCard from "../components/common/dishCard";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 import NavHeader from "../components/common/navHeader";
+import { DATABASE_CONFIG } from "../config/database";
 
 const DishById: React.FC = () => {
   const [dish, setDish] = useState<Dish | null>(null);
@@ -26,8 +27,8 @@ const DishById: React.FC = () => {
       try {
         setLoading(true);
         const response = await tablesDB.getRow({
-          databaseId: "databaseId",
-          tableId: "dishesCollectionId",
+          databaseId: DATABASE_CONFIG.databaseId,
+          tableId: DATABASE_CONFIG.collections.dishes,
           rowId: id
         });
         setDish(response);
@@ -47,8 +48,8 @@ const DishById: React.FC = () => {
     setSaveLoading(true);
     try {
       await tablesDB.updateRow({
-        databaseId: "databaseId",
-        tableId: "dishesCollectionId",
+        databaseId: DATABASE_CONFIG.databaseId,
+        tableId: DATABASE_CONFIG.collections.dishes,
         rowId: dish.id,
         data: dishData
       });

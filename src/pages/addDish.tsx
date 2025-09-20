@@ -4,6 +4,7 @@ import DishCard from "../components/common/dishCard";
 import NavHeader from "../components/common/navHeader";
 import Notify from "../components/ui/notify";
 import { tablesDB } from "../utils/appwrite";
+import { DATABASE_CONFIG } from "../config/database";
 
 const AddDish: React.FC = () => {
   const [jsonInput, setJsonInput] = useState<string>("");
@@ -35,8 +36,8 @@ const AddDish: React.FC = () => {
     setLoading(true);
     try {
       await tablesDB.createRow({
-        databaseId: "databaseId",
-        tableId: "dishesCollectionId",
+        databaseId: DATABASE_CONFIG.databaseId,
+        tableId: DATABASE_CONFIG.collections.dishes,
         rowId: "unique()",
         data: validatedDish
       });

@@ -7,6 +7,7 @@ import NavHeader from "../components/common/navHeader";
 import { AppPath } from "../lib/app.config";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Notify from "../components/ui/notify";
+import { DATABASE_CONFIG } from "../config/database";
 
 type DishSearchResult = {
   id: Dish["id"];
@@ -26,8 +27,8 @@ const FindDishes: React.FC = () => {
       setLoading(true);
       try {
         const response = await tablesDB.listRows({
-          databaseId: "databaseId",
-          tableId: "dishesCollectionId"
+          databaseId: DATABASE_CONFIG.databaseId,
+          tableId: DATABASE_CONFIG.collections.dishes
         });
         const filtered = response.rows.filter((dish: any) => 
           dish.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -50,8 +51,8 @@ const FindDishes: React.FC = () => {
     setLoading(true);
     try {
       const response = await tablesDB.createRow({
-        databaseId: "databaseId",
-        tableId: "dishesCollectionId",
+        databaseId: DATABASE_CONFIG.databaseId,
+        tableId: DATABASE_CONFIG.collections.dishes,
         rowId: "unique()",
         data: dishData
       });
