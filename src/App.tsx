@@ -1,7 +1,7 @@
 import { Route, HashRouter, Routes, Navigate } from "react-router-dom";
 import Week from "./pages/week";
 import { AppPath } from "./lib/app.config";
-import SignInSignUp from "./pages/auth";
+import GoogleAuth from "./pages/auth";
 
 import UserProvider from "./contexts/UserProvider";
 import FindDishes from "./pages/findDishes";
@@ -14,7 +14,7 @@ function App() {
     <UserProvider>
       <HashRouter>
         <Routes>
-          <Route path={AppPath.AUTH} element={<SignInSignUp />} />
+          <Route path={AppPath.AUTH} element={<GoogleAuth />} />
           <Route
             path={AppPath.ADD_DISH}
             element={

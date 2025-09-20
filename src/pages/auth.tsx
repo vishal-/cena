@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { account } from "../utils/appwrite";
 import { useUser } from "../hooks/useUser";
 import { AppPath } from "../lib/app.config";
 
-const SignInSignUp: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [loading, setLoading] = useState(false);
+const GoogleAuth: React.FC = () => {
   const navigate = useNavigate();
   const { user, login } = useUser();
 
@@ -17,111 +14,25 @@ const SignInSignUp: React.FC = () => {
     }
   }, [user, navigate]);
 
-  const [signInData, setSignInData] = useState({
-    email: "",
-    password: ""
-  });
-  const [signUpData, setSignUpData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
-
-  const handleSignInSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-
-    try {
-      await account.createEmailPasswordSession(
-        signInData.email,
-        signInData.password
-      );
-      // Redirect will happen automatically via useEffect when user state updates
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Login failed");
-    }
-    setLoading(false);
-  };
-
-  const handleSignUpSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (signUpData.password !== signUpData.confirmPassword) {
-      alert("Passwords don't match");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      await account.create(
-        "unique()",
-        signUpData.email,
-        signUpData.password,
-        signUpData.name
-      );
-      alert("Account created successfully!");
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Account creation failed");
-    }
-    setLoading(false);
-  };
-
   return (
-    <div className="max-w-sm mx-auto mt-9">
-      <h2 className="text-2xl font-bold text-center mb-3">
-        {isSignUp ? "Sign Up" : "Sign In"}
-      </h2>
+    <div className="min-h-screen bg-gray-900 flex items-start justify-center p-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+            Sign in to Cena
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-400">
+            Your personal recipe and meal management app
+          </p>
+        </div>
 
-      {!isSignUp ? (
-        <div className="px-3">
-          <input
-            className="w-full p-3 mt-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            placeholder="Email Address"
-            type="email"
-            value={signInData.email}
-            onChange={(e) =>
-              setSignInData({ ...signInData, email: e.target.value })
-            }
-          />
-          <input
-            className="w-full p-3 mt-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            placeholder="Password"
-            type="password"
-            value={signInData.password}
-            onChange={(e) =>
-              setSignInData({ ...signInData, password: e.target.value })
-            }
-          />
-          <button
-            onClick={handleSignInSubmit}
-            disabled={loading}
-            className="w-full mt-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-          >
-            {loading ? "Signing In..." : "Sign In"}
-          </button>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
-                Or continue with
-              </span>
-            </div>
-          </div>
-
+        <div className="mt-8 space-y-6">
           <button
             onClick={login}
-            disabled={loading}
-            className="w-full py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
           >
-            <div className="flex items-center justify-center">
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
                 <path
                   fill="#4285f4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -143,71 +54,15 @@ const SignInSignUp: React.FC = () => {
             </div>
           </button>
         </div>
-      ) : (
-        <div className="px-3">
-          <input
-            className="w-full p-3 mt-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            placeholder="Full Name"
-            value={signUpData.name}
-            onChange={(e) =>
-              setSignUpData({ ...signUpData, name: e.target.value })
-            }
-          />
-          <input
-            className="w-full p-3 mt-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            placeholder="Email Address"
-            type="email"
-            value={signUpData.email}
-            onChange={(e) =>
-              setSignUpData({ ...signUpData, email: e.target.value })
-            }
-          />
-          <input
-            className="w-full p-3 mt-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            placeholder="Password"
-            type="password"
-            value={signUpData.password}
-            onChange={(e) =>
-              setSignUpData({ ...signUpData, password: e.target.value })
-            }
-          />
-          <input
-            className="w-full p-3 mt-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            placeholder="Confirm Password"
-            type="password"
-            value={signUpData.confirmPassword}
-            onChange={(e) =>
-              setSignUpData({
-                ...signUpData,
-                confirmPassword: e.target.value
-              })
-            }
-          />
-          <button
-            onClick={handleSignUpSubmit}
-            disabled={loading}
-            className="w-full mt-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
-        </div>
-      )}
 
-      <p className="text-center mt-4 text-gray-600">
-        {!isSignUp ? "Not a user?" : "Already have an account?"}{" "}
-        <button
-          onClick={() => setIsSignUp(!isSignUp)}
-          className="text-blue-600 hover:underline bg-transparent border-none cursor-pointer"
-        >
-          {!isSignUp ? "Sign up" : "Sign in"}
-        </button>
-      </p>
+        <div className="text-center">
+          <p className="text-xs text-gray-500">
+            By signing in, you agree to our terms and privacy policy
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default SignInSignUp;
+export default GoogleAuth;
