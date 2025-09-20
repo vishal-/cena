@@ -9,5 +9,5 @@ export interface Dish {
   prepRequired?: boolean; // Changed from prep_required
   cookingTime?: number; // Changed from cookng_time
   updatedAt?: string; // Changed from updated_at
-  updatedBy?: string; // Changed from updated_by
+  owner: string; // Changed from updated_by
 }

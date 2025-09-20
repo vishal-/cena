@@ -1,28 +1,29 @@
 import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { account } from "../utils/appwrite";
+import type { Models } from "appwrite";
+import { OAuthProvider } from "appwrite";
 
 export interface UserContextType {
-  user: any | null; // Replace 'any' with the appropriate Appwrite user type
+  user: Models.User<Models.Preferences> | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  login: async () => { },
-  logout: async () => { },
+  login: async () => {},
+  logout: async () => {}
 });
 
 interface UserProviderProps {
   children: ReactNode;
 }
 
-// Define a custom OAuthProvider type
-export type OAuthProvider = "google";
-
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -40,7 +41,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const login = async () => {
     try {
       await account.createOAuth2Session(
-        "google" as any,
+        OAuthProvider.Google,
         "http://localhost:3000",
         "http://localhost:3000/logout"
       );
@@ -59,9 +60,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value= {{ user, login, logout }
-}>
-  { children }
-  </UserContext.Provider>
+    <UserContext.Provider value={{ user, login, logout }}>
+      {children}
+    </UserContext.Provider>
   );
 };
