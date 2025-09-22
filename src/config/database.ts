@@ -5,11 +5,3 @@ export const DATABASE_CONFIG = {
   }
 } as const;
 
-export const MEAL_TYPES = [
-  "Breakfast",
-  "Lunch",
-  "Dinner",
-  "Snack",
-  "Dessert",
-  "Appetizer"
-] as const;
