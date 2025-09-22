@@ -11,7 +11,6 @@ import {
   formatErrorMessage,
   getErrorMessageWithFallback
 } from "../utils/error.utils";
-import { fromApiDish, toApiDish, ApiDish } from "../utils/dishTransform";
 
 const DishById: React.FC = () => {
   const [dish, setDish] = useState<Dish | null>(null);
@@ -41,7 +40,7 @@ const DishById: React.FC = () => {
           tableId: DATABASE_CONFIG.collections.dishes,
           rowId: id
         });
-        setDish(fromApiDish(response as unknown as ApiDish));
+        setDish(response as unknown as Dish);
       } catch (err) {
         setError(getErrorMessageWithFallback(err, "An error occurred"));
       } finally {
@@ -52,7 +51,7 @@ const DishById: React.FC = () => {
     fetchDish();
   }, [id]);
 
-  const handleSave = async (dishData: Omit<Dish, "id"> | Dish) => {
+  const handleSave = async (dishData: Omit<Dish, "$id"> | Dish) => {
     if (!dish) return;
 
     setSaveLoading(true);
@@ -60,13 +59,13 @@ const DishById: React.FC = () => {
       await tablesDB.updateRow({
         databaseId: DATABASE_CONFIG.databaseId,
         tableId: DATABASE_CONFIG.collections.dishes,
-        rowId: dish.id,
-        data: toApiDish(dishData as Dish)
+        rowId: dish.$id,
+        data: dishData
       });
       setDish({
         ...dishData,
-        id: dish.id,
-        updatedAt: new Date().toISOString()
+        $id: dish.$id,
+        $updatedAt: new Date().toISOString()
       } as Dish);
       setIsEditing(false);
       setNotification({

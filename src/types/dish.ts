@@ -1,13 +1,14 @@
 export interface Dish {
-  id: string;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
   name: string;
   description?: string;
   recipe?: string;
-  ytLink?: string;
+  yt_link?: string;
   cuisine: string;
-  caloriePerServing?: number;
-  prepRequired?: boolean;
-  cookingTime?: number;
-  updatedAt: string;
+  calorie_per_serving?: number;
+  prep_required?: boolean;
+  cooking_time?: number;
   owner: string;
 }

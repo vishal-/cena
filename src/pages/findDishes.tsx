@@ -8,10 +8,9 @@ import { FaExternalLinkAlt, FaPlus } from "react-icons/fa";
 import Notify from "../components/ui/notify";
 import { DATABASE_CONFIG } from "../config/database";
 import { formatErrorMessage } from "../utils/error.utils";
-import { fromApiDish, ApiDish } from "../utils/dishTransform";
 
 type DishSearchResult = {
-  id: Dish["id"];
+  $id: Dish["$id"];
   name: Dish["name"];
 };
 
@@ -32,14 +31,10 @@ const FindDishes: React.FC = () => {
           databaseId: DATABASE_CONFIG.databaseId,
           tableId: DATABASE_CONFIG.collections.dishes
         });
-        const filtered = response.rows
-          .map((row) => fromApiDish(row as unknown as ApiDish))
-          .filter((dish) =>
-            dish.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        setFilteredDishes(
-          filtered.map((dish) => ({ id: dish.id, name: dish.name }))
+        const filtered = response.rows.filter((dish: unknown) =>
+          (dish as Dish).name.toLowerCase().includes(searchTerm.toLowerCase())
         );
+        setFilteredDishes(filtered as unknown as DishSearchResult[]);
       } catch (error) {
         setNotification({
           message: formatErrorMessage("Error searching dishes", error),
@@ -101,8 +96,8 @@ const FindDishes: React.FC = () => {
       <div className="space-y-2">
         {filteredDishes.map((dish) => (
           <Link
-            key={dish.id}
-            to={`${AppPath.DISH_BY_ID}/${dish.id}`}
+            key={dish.$id}
+            to={`${AppPath.DISH_BY_ID}/${dish.$id}`}
             className="block bg-gray-800 rounded-lg border border-gray-700 p-4 hover:bg-gray-700 transition-colors"
           >
             <div className="text-white font-medium">

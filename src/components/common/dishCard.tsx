@@ -7,9 +7,9 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
       <div className="flex justify-between items-start mb-6">
         <h3 className="text-xl font-semibold text-white">{dish.name}</h3>
 
-        {dish.ytLink && (
+        {dish.yt_link && (
           <a
-            href={dish.ytLink}
+            href={dish.yt_link}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 hover:underline text-sm"
@@ -30,19 +30,19 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
             <strong>Cuisine:</strong> {dish.cuisine}
           </div>
         )}
-        {dish.caloriePerServing && (
+        {dish.calorie_per_serving && (
           <div>
-            <strong>Calories:</strong> {dish.caloriePerServing}
+            <strong>Calories:</strong> {dish.calorie_per_serving}
           </div>
         )}
-        {dish.cookingTime && (
+        {dish.cooking_time && (
           <div>
-            <strong>Cooking Time:</strong> {dish.cookingTime} min
+            <strong>Cooking Time:</strong> {dish.cooking_time} min
           </div>
         )}
         <div>
           <strong>Prep Required:</strong>&#160;
-          {dish.prepRequired ? "Yes" : "No"}
+          {dish.prep_required ? "Yes" : "No"}
         </div>
       </div>
       {dish.description && (
@@ -59,11 +59,11 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
           Updated by:&#160;
           <span className="text-gray-300">{dish.owner}</span>
         </p>
-        {dish.updatedAt && (
+        {dish.$updatedAt && (
           <p className="text-sm text-gray-400">
             Updated at:&#160;
             <span className="text-gray-300">
-              {formatDateWithYear(new Date(dish.updatedAt))}
+              {formatDateWithYear(new Date(dish.$updatedAt))}
             </span>
           </p>
         )}

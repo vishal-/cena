@@ -10,7 +10,6 @@ import {
   formatErrorMessage,
   getErrorMessageWithFallback
 } from "../utils/error.utils";
-import { toApiDish } from "../utils/dishTransform";
 
 const AddDish: React.FC = () => {
   const [jsonInput, setJsonInput] = useState<string>("");
@@ -51,7 +50,7 @@ const AddDish: React.FC = () => {
         databaseId: DATABASE_CONFIG.databaseId,
         tableId: DATABASE_CONFIG.collections.dishes,
         rowId: "unique()",
-        data: toApiDish(validatedDish as Dish)
+        data: validatedDish
       });
 
       setNotification({ message: "Dish saved successfully!", type: "success" });
@@ -67,7 +66,7 @@ const AddDish: React.FC = () => {
     setLoading(false);
   };
 
-  const handleFormSave = async (dishData: Omit<Dish, "id">) => {
+  const handleFormSave = async (dishData: Omit<Dish, "$id">) => {
     if (!dishData.name.trim()) return;
 
     setLoading(true);
@@ -76,7 +75,7 @@ const AddDish: React.FC = () => {
         databaseId: DATABASE_CONFIG.databaseId,
         tableId: DATABASE_CONFIG.collections.dishes,
         rowId: "unique()",
-        data: toApiDish({ ...dishData, id: "", updatedAt: "" } as Dish)
+        data: dishData
       });
 
       setNotification({ message: "Dish saved successfully!", type: "success" });
@@ -185,7 +184,9 @@ const AddDish: React.FC = () => {
       {validatedDish && activeTab === "json" && (
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Preview:</h3>
-          <DishCard dish={{ ...validatedDish, id: "" }} />
+          <DishCard
+            dish={{ ...validatedDish, $id: "", $createdAt: "", $updatedAt: "" }}
+          />
         </div>
       )}
     </div>
