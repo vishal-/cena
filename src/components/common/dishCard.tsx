@@ -35,9 +35,9 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
             <strong>Calories:</strong> {dish.calorie_per_serving}
           </div>
         )}
-        {dish.cookng_time && (
+        {dish.cooking_time && (
           <div>
-            <strong>Cooking Time:</strong> {dish.cookng_time} min
+            <strong>Cooking Time:</strong> {dish.cooking_time} min
           </div>
         )}
         <div>
@@ -57,13 +57,13 @@ const DishCard: React.FC<{ dish: Dish }> = ({ dish }) => {
       <div className="mt-4 pt-4 border-t border-gray-700 grid md:grid-cols-2">
         <p className="text-sm text-gray-400">
           Updated by:&#160;
-          <span className="text-gray-300">{dish.updated_by}</span>
+          <span className="text-gray-300">{dish.owner}</span>
         </p>
-        {dish.updated_at && (
+        {dish.$updatedAt && (
           <p className="text-sm text-gray-400">
             Updated at:&#160;
             <span className="text-gray-300">
-              {formatDateWithYear(new Date(dish.updated_at))}
+              {formatDateWithYear(new Date(dish.$updatedAt))}
             </span>
           </p>
         )}

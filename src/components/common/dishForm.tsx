@@ -3,7 +3,7 @@ import type { Dish } from "../../types/dish";
 import { cuisines } from "../../lib/cuisines";
 
 interface DishFormProps {
-  onSave: (dish: Omit<Dish, "id"> | Dish) => void | Promise<void>;
+  onSave: (dish: Omit<Dish, "$id"> | Dish) => void | Promise<void>;
   loading?: boolean;
   initialData?: Dish;
   isEditing?: boolean;
@@ -15,7 +15,7 @@ const DishForm: React.FC<DishFormProps> = ({
   initialData,
   isEditing
 }) => {
-  const [dish, setDish] = useState<Omit<Dish, "id"> | Dish>(
+  const [dish, setDish] = useState<Omit<Dish, "$id"> | Dish>(
     initialData || {
       name: "",
       description: "",
@@ -24,7 +24,10 @@ const DishForm: React.FC<DishFormProps> = ({
       cuisine: "",
       calorie_per_serving: undefined,
       prep_required: false,
-      cookng_time: undefined
+      cooking_time: undefined,
+      owner: "",
+      $createdAt: "",
+      $updatedAt: ""
     }
   );
 
@@ -45,7 +48,9 @@ const DishForm: React.FC<DishFormProps> = ({
           placeholder="Dish Name * (lowercase, numbers, hyphens only)"
           value={dish.name}
           onChange={(e) => {
-            const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+            const value = e.target.value
+              .toLowerCase()
+              .replace(/[^a-z0-9-]/g, "");
             setDish({ ...dish, name: value });
           }}
           className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -79,11 +84,11 @@ const DishForm: React.FC<DishFormProps> = ({
         <input
           type="number"
           placeholder="Cooking time (minutes)"
-          value={dish.cookng_time || ""}
+          value={dish.cooking_time || ""}
           onChange={(e) =>
             setDish({
               ...dish,
-              cookng_time: e.target.value ? Number(e.target.value) : undefined
+              cooking_time: e.target.value ? Number(e.target.value) : undefined
             })
           }
           className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

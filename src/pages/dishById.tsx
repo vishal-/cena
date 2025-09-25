@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import supabase from "../utils/supabase";
+import { tablesDB } from "../utils/appwrite";
 import DishCard from "../components/common/dishCard";
 import DishForm from "../components/common/dishForm";
 import type { Dish } from "../types/dish";
 import NavHeader from "../components/common/navHeader";
+import Notify from "../components/ui/notify";
+import { DATABASE_CONFIG } from "../config/database";
+import {
+  formatErrorMessage,
+  getErrorMessageWithFallback
+} from "../utils/error.utils";
 
 const DishById: React.FC = () => {
   const [dish, setDish] = useState<Dish | null>(null);
@@ -12,6 +18,10 @@ const DishById: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const { id } = useParams<{ id: string }>();
 
@@ -25,19 +35,14 @@ const DishById: React.FC = () => {
 
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("Dishes")
-          .select("*")
-          .eq("id", id)
-          .single();
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        setDish(data);
+        const response = await tablesDB.getRow({
+          databaseId: DATABASE_CONFIG.databaseId,
+          tableId: DATABASE_CONFIG.collections.dishes,
+          rowId: id
+        });
+        setDish(response as unknown as Dish);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        setError(getErrorMessageWithFallback(err, "An error occurred"));
       } finally {
         setLoading(false);
       }
@@ -46,20 +51,32 @@ const DishById: React.FC = () => {
     fetchDish();
   }, [id]);
 
-  const handleSave = async (dishData: Omit<Dish, "id"> | Dish) => {
+  const handleSave = async (dishData: Omit<Dish, "$id"> | Dish) => {
     if (!dish) return;
 
     setSaveLoading(true);
-    const { error } = await supabase
-      .from("Dishes")
-      .update(dishData)
-      .eq("id", dish.id);
-
-    if (error) {
-      alert("Error updating dish: " + error.message);
-    } else {
-      setDish({ ...dishData, id: dish.id } as Dish);
+    try {
+      await tablesDB.updateRow({
+        databaseId: DATABASE_CONFIG.databaseId,
+        tableId: DATABASE_CONFIG.collections.dishes,
+        rowId: dish.$id,
+        data: dishData
+      });
+      setDish({
+        ...dishData,
+        $id: dish.$id,
+        $updatedAt: new Date().toISOString()
+      } as Dish);
       setIsEditing(false);
+      setNotification({
+        message: "Dish updated successfully!",
+        type: "success"
+      });
+    } catch (error) {
+      setNotification({
+        message: formatErrorMessage("Error updating dish", error),
+        type: "error"
+      });
     }
     setSaveLoading(false);
   };
@@ -127,6 +144,14 @@ const DishById: React.FC = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {notification && (
+        <Notify
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
       )}
     </div>
   );

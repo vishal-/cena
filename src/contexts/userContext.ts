@@ -1,12 +1,14 @@
 import { createContext } from "react";
-import type { User } from "@supabase/supabase-js";
+import type { Models } from "appwrite";
 
 export interface UserContextType {
-  user: User | null;
-  userName: string | null;
+  user: Models.User<Models.Preferences> | null;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  userName: null
+  login: async () => {},
+  logout: async () => {}
 });
